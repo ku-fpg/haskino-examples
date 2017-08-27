@@ -1,2 +1,1 @@
 # haskino-examples
-Haskino Examples

@@ -1,0 +1,58 @@
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.hi
+*.dyn_hi
+*.dyn_o
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+
+# Sandbox
+.cabal-sandbox
+cabal.sandbox.config
+.stack.work/
+.stack-work/
+dist
+
+# Arduino Makefile
+firmware/Arduino-Makefile
+
+# Firmware binaries
+firmware/HaskinoFirmware/build-*
+firmware/HaskinoRuntime/build-*
+firmware/EEPROMErase/build-*
+
+# Mac Files
+.DS_Store
+
+# Editor temporary files
+.*.swp
+
+# Tempoarary Ignore
