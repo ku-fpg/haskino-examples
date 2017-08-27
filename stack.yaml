@@ -41,7 +41,7 @@ packages:
 - 'lcd-counter'
 - 'multi-led'
 - 'sem-example'
-- location: https://github.com/ku-fpg/haskino/archive/8790f439b0b964cb582969bdb4eb13a6f9bc55df.zip
+- location: https://github.com/ku-fpg/haskino/archive/master.zip
   extra-dep: true
 - location: https://github.com/ku-fpg/remote-monad/archive/d39fa9d179d6d294d85de81720041fedd44183e1.zip
   extra-dep: true
