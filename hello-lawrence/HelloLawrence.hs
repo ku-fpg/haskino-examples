@@ -37,16 +37,21 @@ theProgram :: Arduino ()
 theProgram = do
   lcd <- lcdRegister hitachi
   lcdBacklightOn lcd
-  lcdHome lcd
-  lcdWrite lcd $ litString "Rock   "
-  delayMillis 1500   
-  lcdHome lcd
-  lcdWrite lcd $ litString "Chalk  "
-  delayMillis 1500   
-  lcdHome lcd
-  lcdWrite lcd $ litString "Jayhawk"
-  delayMillis 1500
-  lcdClear lcd
+  hello lcd
+
+hello :: LCD -> Arduino ()
+hello lcd =
+  loop $ do
+    lcdHome lcd
+    lcdWrite lcd $ litString "Rock   "
+    delayMillis 1500   
+    lcdHome lcd
+    lcdWrite lcd $ litString "Chalk  "
+    delayMillis 1500   
+    lcdHome lcd
+    lcdWrite lcd $ litString "Jayhawk"
+    delayMillis 1500
+    lcdClear lcd
 
 -- Execute this function to run program with firmware interpreter
 lcdExample :: IO ()
