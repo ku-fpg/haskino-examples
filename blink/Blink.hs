@@ -19,22 +19,24 @@ import System.Hardware.Haskino
 led :: Word8
 led = 13
 
-delay :: Word32
-delay = 1000
+delay :: Word32 -> Word32
+delay d = d + 400
 
-blink :: Arduino ()
-blink = do
+blink :: Word32 -> Arduino ()
+blink t = do
+    -- let led = 13
+    -- let delay = 250 + t
     setPinMode led OUTPUT
     loop $ do
         digitalWrite led True
-        delayMillis delay
+        delayMillis (delay t)
         digitalWrite led False
-        delayMillis delay
+        delayMillis (delay t)
 
 blinkExample :: IO ()
-blinkExample = withArduino True "/dev/cu.usbmodem1421" blink
+blinkExample = withArduino True "/dev/cu.usbmodem1421" (blink 500)
 
 main :: IO ()
-main = compileProgram blink "blink.ino"
+main = compileProgram (blink 500) "blink.ino"
 -- main = blinkExample
 
