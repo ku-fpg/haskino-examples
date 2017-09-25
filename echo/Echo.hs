@@ -41,9 +41,10 @@ echo = do
     serialBegin portNum 115200
     loop $ do
         waitForInput
-        l <- serialReadList portNum
-        lcdWrite lcd l
-        serialWriteList portNum l
+        c <- serialRead portNum
+        let ch = fromIntegral c
+        lcdWriteChar lcd ch
+        serialWrite portNum ch
   where
     waitForInput :: Arduino ()
     waitForInput = do
