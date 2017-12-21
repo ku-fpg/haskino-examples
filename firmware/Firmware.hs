@@ -36,8 +36,8 @@ readChar = do
         return $ fromIntegral s
     else readChar
 
-readFrameRev :: Arduino [Word8]
-readFrameRev = readFrame' []
+readFrame :: Arduino [Word8]
+readFrame = readFrame' []
   where
     readFrame' :: [Word8] -> Arduino [Word8]
     readFrame' l = do
@@ -48,21 +48,14 @@ readFrameRev = readFrame' []
             let ec = c' `xor` hdlcMask 
             readFrame' $ ec : l
         else if c == hdlcFrameFlag 
-             then return l
+             then return $ reverse l
              else readFrame' $ c : l
-
-readFrame :: Word8 -> Arduino [Word8]
-readFrame a = do
-    digitalWrite a True
-    rf <- readFrameRev
-    debug $ reverse rf
-    return $ reverse rf
 
 firmware :: Arduino ()
 firmware = do
     serialBegin portNum 115200
     loop $ do
-        _ <- readFrame 2
+        _ <- readFrame
         return ()
 
 main :: IO ()
