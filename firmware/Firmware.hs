@@ -8,12 +8,35 @@
 --
 -- TBD.
 -------------------------------------------------------------------------------
-
 module Main where
 
 import System.Hardware.Haskino
 import Data.Word
 import Data.Bits
+
+import FirmwareCmds 
+import BoardControlCmds
+
+processBoardStatusCommand :: [Word8] -> Arduino ()
+processBoardStatusCommand c = return ()
+
+parseMessage :: [Word8] -> Arduino ()
+parseMessage m = do
+    case (head m) .&. 0xF0 of
+        c | c == firmwareTypeVal BC_CMD_TYPE -> processBoardControlCommand m
+          | c == firmwareTypeVal BS_CMD_TYPE -> processBoardStatusCommand m
+        {-
+        BC_CMD_TYPE -> processBoardControlCommand m
+        BS_CMD_TYPE -> processBoardStatusCommand m
+        DIG_CMD_TYPE  -> processDigitalCommand m 
+        ALG_CMD_TYPE  -> processAnalogCommand m 
+        I2C_CMD_TYPE  -> processI2CCommand m 
+        SER_CMD_TYPE  -> processSerialCommand m 
+        STEP_CMD_TYPE -> processStepperCommand m 
+        SVRO_CMD_TYPE -> processServoCommand m  
+        REF_CMD_TYPE  -> processRefernceCommand m
+        -}
+        _             -> return ()
 
 portNum :: Word8
 portNum = 0
@@ -55,7 +78,8 @@ firmware :: Arduino ()
 firmware = do
     serialBegin portNum 115200
     loop $ do
-        _ <- readFrame
+        f <- readFrame
+        parseMessage f
         return ()
 
 main :: IO ()
