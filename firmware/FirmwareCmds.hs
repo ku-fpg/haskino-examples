@@ -1,7 +1,6 @@
 -------------------------------------------------------------------------------
 -- |
--- Module      :  System.Hardware.Haskino.SamplePrograms.Rewrite.Firmware
---                Based on System.Hardware.Arduino
+-- Module      :  FirmwareCmds
 -- Copyright   :  (c) University of Kansas
 -- License     :  BSD3
 -- Stability   :  experimental
@@ -115,7 +114,6 @@ firmwareTypeVal STEP_CMD_TYPE = 0x60
 firmwareTypeVal SVRO_CMD_TYPE = 0x80
 firmwareTypeVal REF_CMD_TYPE = 0xC0
 firmwareTypeVal SER_CMD_TYPE = 0xE0
-
 
 data ExprType = EXPR_UNIT
               | EXPR_BOOL

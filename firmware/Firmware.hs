@@ -1,7 +1,6 @@
 -------------------------------------------------------------------------------
 -- |
--- Module      :  System.Hardware.Haskino.SamplePrograms.Rewrite.Firmware
---                Based on System.Hardware.Arduino
+-- Module      :  Main
 -- Copyright   :  (c) University of Kansas
 -- License     :  BSD3
 -- Stability   :  experimental
