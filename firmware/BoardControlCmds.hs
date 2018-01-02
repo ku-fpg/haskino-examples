@@ -32,11 +32,12 @@ processSetPinMode m =
     if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8) &&
        (head m == 3) && (m !! 4 == exprTypeVal EXPR_WORD8)
     then do
-        if m !! 5 == 1
-        then setPinMode (m !! 2) OUTPUT
-        else if m !! 5 == 2
-             then setPinMode (m !! 2) INPUT_PULLUP
-             else setPinMode (m !! 2) INPUT
+        let mode = case m !! 5 of
+                      0 -> INPUT
+                      1 -> OUTPUT
+                      2 -> INPUT_PULLUP
+                      _ -> INPUT
+        setPinMode (m !! 2) mode
     else return ()
 
 processDelayMillis :: [Word8] -> Arduino ()
