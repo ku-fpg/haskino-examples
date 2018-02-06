@@ -25,7 +25,7 @@ processBoardControlCommand m =
         _                                            -> return ()
 
 processSystemReset :: [Word8] -> Arduino ()
-processSystemReset m = systemReset
+processSystemReset _ = systemReset
 
 processSetPinMode :: [Word8] -> Arduino ()
 processSetPinMode m = 
