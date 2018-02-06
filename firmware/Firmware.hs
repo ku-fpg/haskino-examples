@@ -15,9 +15,7 @@ import Data.Bits
 
 import FirmwareCmds 
 import BoardControlCmds
-
-processBoardStatusCommand :: [Word8] -> Arduino ()
-processBoardStatusCommand _ = return ()
+import BoardStatusCmds
 
 parseMessage :: [Word8] -> Arduino ()
 parseMessage m = do
@@ -25,8 +23,6 @@ parseMessage m = do
         c | c == firmwareTypeVal BC_CMD_TYPE -> processBoardControlCommand m
           | c == firmwareTypeVal BS_CMD_TYPE -> processBoardStatusCommand m
         {-
-        BC_CMD_TYPE -> processBoardControlCommand m
-        BS_CMD_TYPE -> processBoardStatusCommand m
         DIG_CMD_TYPE  -> processDigitalCommand m 
         ALG_CMD_TYPE  -> processAnalogCommand m 
         I2C_CMD_TYPE  -> processI2CCommand m 

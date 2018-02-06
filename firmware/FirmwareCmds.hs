@@ -137,3 +137,64 @@ exprTypeVal EXPR_INT16 = 0x06
 exprTypeVal EXPR_INT32 = 0x07
 exprTypeVal EXPR_LIST8 = 0x08
 exprTypeVal EXPR_FLOAT = 0x09
+
+data FirmwareReply =  BC_RESP_DELAY
+                   |  BC_RESP_IF_THEN_ELSE
+                   |  BC_RESP_ITERATE
+                   |  BS_RESP_VERSION
+                   |  BS_RESP_TYPE
+                   |  BS_RESP_MICROS
+                   |  BS_RESP_MILLIS
+                   |  BS_RESP_STRING
+                   |  BS_RESP_DEBUG
+                   |  DIG_RESP_READ_PIN
+                   |  DIG_RESP_READ_PORT
+                   |  ALG_RESP_READ_PIN
+                   |  I2C_RESP_READ
+                   |  SER_RESP_AVAIL
+                   |  SER_RESP_READ
+                   |  SER_RESP_READ_LIST
+                   |  STEP_RESP_2PIN
+                   |  STEP_RESP_4PIN
+                   |  STEP_RESP_STEP
+                   |  SRVO_RESP_ATTACH
+                   |  SRVO_RESP_READ
+                   |  SRVO_RESP_READ_MICROS
+                   |  SCHED_RESP_QUERY
+                   |  SCHED_RESP_QUERY_ALL
+                   |  SCHED_RESP_BOOT
+                   |  REF_RESP_NEW
+                   |  REF_RESP_READ
+                   |  EXPR_RESP_RET
+                deriving Show
+
+firmwareReplyVal :: FirmwareReply -> Word8
+firmwareReplyVal BC_RESP_DELAY         = 0x18
+firmwareReplyVal BC_RESP_IF_THEN_ELSE  = 0x19
+firmwareReplyVal BC_RESP_ITERATE       = 0x1A
+firmwareReplyVal BS_RESP_VERSION       = 0x28
+firmwareReplyVal BS_RESP_TYPE          = 0x29
+firmwareReplyVal BS_RESP_MICROS        = 0x2A
+firmwareReplyVal BS_RESP_MILLIS        = 0x2B
+firmwareReplyVal BS_RESP_STRING        = 0x2C
+firmwareReplyVal BS_RESP_DEBUG         = 0x2D
+firmwareReplyVal DIG_RESP_READ_PIN     = 0x38
+firmwareReplyVal DIG_RESP_READ_PORT    = 0x39
+firmwareReplyVal ALG_RESP_READ_PIN     = 0x48
+firmwareReplyVal I2C_RESP_READ         = 0x58
+firmwareReplyVal STEP_RESP_2PIN        = 0x68
+firmwareReplyVal STEP_RESP_4PIN        = 0x69
+firmwareReplyVal STEP_RESP_STEP        = 0x6A
+firmwareReplyVal SRVO_RESP_ATTACH      = 0x88
+firmwareReplyVal SRVO_RESP_READ        = 0x89
+firmwareReplyVal SRVO_RESP_READ_MICROS = 0x8A
+firmwareReplyVal SCHED_RESP_QUERY      = 0xB0
+firmwareReplyVal SCHED_RESP_QUERY_ALL  = 0xB1
+firmwareReplyVal SCHED_RESP_BOOT       = 0xB2
+firmwareReplyVal REF_RESP_NEW          = 0xC8
+firmwareReplyVal REF_RESP_READ         = 0xC9
+firmwareReplyVal EXPR_RESP_RET         = 0xD8
+firmwareReplyVal SER_RESP_AVAIL        = 0xE8
+firmwareReplyVal SER_RESP_READ         = 0xE9
+firmwareReplyVal SER_RESP_READ_LIST    = 0xEA
+
