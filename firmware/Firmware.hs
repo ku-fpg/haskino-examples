@@ -17,7 +17,7 @@ import FirmwareCmds
 import BoardControlCmds
 
 processBoardStatusCommand :: [Word8] -> Arduino ()
-processBoardStatusCommand c = return ()
+processBoardStatusCommand _ = return ()
 
 parseMessage :: [Word8] -> Arduino ()
 parseMessage m = do
