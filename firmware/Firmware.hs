@@ -54,8 +54,8 @@ readChar = do
         return $ fromIntegral s
     else readChar
 
-readFrame :: Arduino [Word8]
-readFrame = readFrame' []
+readFrame :: RemoteRef Word8 -> Arduino [Word8]
+readFrame ref = readFrame' []
   where
     readFrame' :: [Word8] -> Arduino [Word8]
     readFrame' l = do
@@ -63,6 +63,8 @@ readFrame = readFrame' []
         if c == hdlcEscape
         then do
             c' <- readChar
+            ch <- readRemoteRef ref
+            writeRemoteRef ref (ch + c')
             let ec = c' `xor` hdlcMask 
             readFrame' $ ec : l
         else if c == hdlcFrameFlag 
@@ -71,9 +73,10 @@ readFrame = readFrame' []
 
 firmware :: Arduino ()
 firmware = do
+    cr <- newRemoteRef (0::Word8)
     serialBegin portNum 115200
     loop $ do
-        f <- readFrame
+        f <- readFrame cr
         parseMessage f
         return ()
 
