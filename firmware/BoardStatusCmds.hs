@@ -26,36 +26,26 @@ processBoardStatusCommand m =
         _                                              -> return ()
 
 processRequestVersion :: [Word8] -> Arduino ()
-processRequestVersion _ = return ()
+processRequestVersion _ = do
+    v <- queryFirmware
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_VERSION) : ( fromIntegral $ v `shiftR` 8) : (fromIntegral $ v .&. 8) : []
 
 processRequestType :: [Word8] -> Arduino ()
-processRequestType m = do
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : 0 : []
+processRequestType _ = do
+    p <- queryProcessor
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : p : []
 
 processRequestMicros :: [Word8] -> Arduino ()
-processRequestMicros m = return () 
-{-
+processRequestMicros _ = do 
     us <- micros
-    (fromIntegral us `shiftR` 24) :  
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD32)
-    then delayMillis $ fromIntegral (m !! 2) `shiftL` 24 .|.
-                       fromIntegral (m !! 3) `shiftL` 16 .|.
-                       fromIntegral (m !! 4) `shiftL`  8 .|.
-                       fromIntegral (m !! 5)
-    else return ()
--}
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_MICROS) : ( fromIntegral $ us `shiftR` 24) : ( fromIntegral $ us `shiftR` 16) : ( fromIntegral $ us `shiftR` 8) :  (fromIntegral $ us .&. 8) : []
 
 processRequestMillis :: [Word8] -> Arduino ()
-processRequestMillis m = return () 
-{-
+processRequestMillis _ = do 
     ms <- millis
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD32)
-    then delayMicros $ fromIntegral (m !! 2) `shiftL` 24 .|.
-                       fromIntegral (m !! 3) `shiftL` 16 .|.
-                       fromIntegral (m !! 4) `shiftL`  8 .|.
-                       fromIntegral (m !! 5)
-    else return ()
--}
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_MICROS) : ( fromIntegral $ ms `shiftR` 24) : ( fromIntegral $ ms `shiftR` 16) : ( fromIntegral $ ms `shiftR` 8) :  (fromIntegral $ ms .&. 8) : []
+
 processDebug :: [Word8] -> Arduino ()
-processDebug _ = return ()
+processDebug ws = do
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_STRING) :  ws
 
