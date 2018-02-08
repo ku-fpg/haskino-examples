@@ -11,7 +11,6 @@ module DigitalCmds where
 
 import System.Hardware.Haskino
 import Data.Word
-import Data.Bits
 
 import Comms
 import FirmwareCmds 
