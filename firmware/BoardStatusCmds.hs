@@ -29,13 +29,12 @@ processBoardStatusCommand m =
 processRequestVersion :: [Word8] -> Arduino ()
 processRequestVersion _ = do
     v <- queryFirmware
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_VERSION) : ( fromIntegral $ v `shiftR` 8) : (fromIntegral $ v .&. 8) : []
+    sendReply (firmwareReplyVal BS_RESP_VERSION) $ ( fromIntegral $ v `shiftR` 8) : (fromIntegral $ v .&. 8) : []
 
 processRequestType :: [Word8] -> Arduino ()
 processRequestType _ = do
     p <- queryProcessor
-    ch <- calcChecksum [1,2]
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : p : ch : []
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : p : 0 : []
 
 processRequestMicros :: [Word8] -> Arduino ()
 processRequestMicros _ = do 
