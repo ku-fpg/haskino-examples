@@ -34,19 +34,19 @@ processRequestVersion _ = do
 processRequestType :: [Word8] -> Arduino ()
 processRequestType _ = do
     p <- queryProcessor
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : p : 0 : []
+    sendReply (firmwareReplyVal BS_RESP_TYPE) $ p : []
 
 processRequestMicros :: [Word8] -> Arduino ()
 processRequestMicros _ = do 
     us <- micros
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_MICROS) : ( fromIntegral $ us `shiftR` 24) : ( fromIntegral $ us `shiftR` 16) : ( fromIntegral $ us `shiftR` 8) :  (fromIntegral $ us .&. 8) : []
+    sendReply (firmwareReplyVal BS_RESP_MICROS) $ ( fromIntegral $ us `shiftR` 24) : ( fromIntegral $ us `shiftR` 16) : ( fromIntegral $ us `shiftR` 8) :  (fromIntegral $ us .&. 8) : []
 
 processRequestMillis :: [Word8] -> Arduino ()
 processRequestMillis _ = do 
     ms <- millis
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_MICROS) : ( fromIntegral $ ms `shiftR` 24) : ( fromIntegral $ ms `shiftR` 16) : ( fromIntegral $ ms `shiftR` 8) :  (fromIntegral $ ms .&. 8) : []
+    sendReply (firmwareReplyVal BS_RESP_MICROS) $ ( fromIntegral $ ms `shiftR` 24) : ( fromIntegral $ ms `shiftR` 16) : ( fromIntegral $ ms `shiftR` 8) :  (fromIntegral $ ms .&. 8) : []
 
 processDebug :: [Word8] -> Arduino ()
 processDebug ws = do
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_STRING) :  ws
+    sendReply (firmwareReplyVal BS_RESP_STRING) ws
 

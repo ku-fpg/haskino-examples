@@ -13,6 +13,9 @@ import System.Hardware.Haskino
 import Data.Word
 import Data.Bits
 
+portNum :: Word8
+portNum = 0
+
 hdlcEscape :: Word8
 hdlcEscape = 0x7D
 
@@ -22,13 +25,39 @@ hdlcFrameFlag = 0x7E
 hdlcMask :: Word8
 hdlcMask = 0x20
 
+readChar :: Arduino Word8
+readChar = do
+    a <- serialAvailable portNum
+    if a > 0
+    then do
+        s <- serialRead portNum
+        return $ fromIntegral s
+    else readChar
+
+readFrame :: RemoteRef Word8 -> Arduino [Word8]
+readFrame ref = readFrame' []
+  where
+    readFrame' :: [Word8] -> Arduino [Word8]
+    readFrame' l = do
+        c <- readChar
+        if c == hdlcEscape
+        then do
+            c' <- readChar
+            ch <- readRemoteRef ref
+            writeRemoteRef ref (ch + c')
+            let ec = c' `xor` hdlcMask 
+            readFrame' $ ec : l
+        else if c == hdlcFrameFlag 
+             then return $ reverse l
+             else readFrame' $ c : l
+
 sendEncodedByte :: Word8 -> Arduino ()
 sendEncodedByte b = 
     if b == hdlcFrameFlag || b == hdlcEscape
     then do
-        serialWrite 0 hdlcEscape
-        serialWrite 0 $ b `xor` hdlcMask
-    else serialWrite 0 b
+        serialWrite portNum hdlcEscape
+        serialWrite portNum $ b `xor` hdlcMask
+    else serialWrite portNum b
 
 sendReplyBytes :: [Word8] -> Arduino ()
 sendReplyBytes l = sendReplyBytes' $ 0 : l
@@ -47,4 +76,4 @@ sendReplyBytes l = sendReplyBytes' $ 0 : l
 sendReply :: Word8 -> [Word8] -> Arduino ()
 sendReply ty rep = do 
     sendReplyBytes $ ty : rep
-    serialWrite 0 hdlcFrameFlag
+    serialWrite portNum hdlcFrameFlag

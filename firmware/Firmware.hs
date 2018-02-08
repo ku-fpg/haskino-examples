@@ -16,14 +16,16 @@ import Data.Bits
 import FirmwareCmds 
 import BoardControlCmds
 import BoardStatusCmds
+import Comms
+import DigitalCmds
 
 parseMessage :: [Word8] -> Arduino ()
 parseMessage m = do
     case (head m) .&. 0xF0 of
-        c | c == firmwareTypeVal BC_CMD_TYPE -> processBoardControlCommand m
-          | c == firmwareTypeVal BS_CMD_TYPE -> processBoardStatusCommand m
+        c | c == firmwareTypeVal BC_CMD_TYPE  -> processBoardControlCommand m
+          | c == firmwareTypeVal BS_CMD_TYPE  -> processBoardStatusCommand m
+          | c == firmwareTypeVal DIG_CMD_TYPE -> processDigitalCommand m
         {-
-        DIG_CMD_TYPE  -> processDigitalCommand m 
         ALG_CMD_TYPE  -> processAnalogCommand m 
         I2C_CMD_TYPE  -> processI2CCommand m 
         SER_CMD_TYPE  -> processSerialCommand m 
@@ -32,44 +34,6 @@ parseMessage m = do
         REF_CMD_TYPE  -> processRefernceCommand m
         -}
         _             -> return ()
-
-portNum :: Word8
-portNum = 0
-
-hdlcFrameFlag :: Word8
-hdlcFrameFlag = 0x7E
-
-hdlcEscape :: Word8
-hdlcEscape = 0x7D
-
-hdlcMask :: Word8
-hdlcMask = 0x20
-
-readChar :: Arduino Word8
-readChar = do
-    a <- serialAvailable portNum
-    if a > 0
-    then do
-        s <- serialRead portNum
-        return $ fromIntegral s
-    else readChar
-
-readFrame :: RemoteRef Word8 -> Arduino [Word8]
-readFrame ref = readFrame' []
-  where
-    readFrame' :: [Word8] -> Arduino [Word8]
-    readFrame' l = do
-        c <- readChar
-        if c == hdlcEscape
-        then do
-            c' <- readChar
-            ch <- readRemoteRef ref
-            writeRemoteRef ref (ch + c')
-            let ec = c' `xor` hdlcMask 
-            readFrame' $ ec : l
-        else if c == hdlcFrameFlag 
-             then return $ reverse l
-             else readFrame' $ c : l
 
 firmware :: Arduino ()
 firmware = do

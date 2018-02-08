@@ -30,7 +30,7 @@ processSystemReset _ = systemReset
 processSetPinMode :: [Word8] -> Arduino ()
 processSetPinMode m = 
     if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8) &&
-       (head m == 3) && (m !! 4 == exprTypeVal EXPR_WORD8)
+       (m !! 3 == 0) && (m !! 4 == exprTypeVal EXPR_WORD8)
     then do
         let mode = case m !! 5 of
                       0 -> INPUT
