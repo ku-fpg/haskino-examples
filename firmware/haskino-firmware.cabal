@@ -29,7 +29,7 @@ Executable haskino-firmware
          ghc                    >= 8.0.2
 
     Main-is: Firmware.hs
-    Other-modules: FirmwareCmds, BoardControlCmds, BoardStatusCmds, Comms, DigitalCmds
+    Other-modules: FirmwareCmds, BoardControlCmds, BoardStatusCmds, Comms, DigitalCmds, AnalogCmds
     Hs-Source-Dirs: .
     default-language:    Haskell2010
     if flag(deep)
