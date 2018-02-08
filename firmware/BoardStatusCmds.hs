@@ -13,6 +13,7 @@ import System.Hardware.Haskino
 import Data.Word
 import Data.Bits
 
+import Comms
 import FirmwareCmds 
 
 processBoardStatusCommand :: [Word8] -> Arduino ()
@@ -33,7 +34,8 @@ processRequestVersion _ = do
 processRequestType :: [Word8] -> Arduino ()
 processRequestType _ = do
     p <- queryProcessor
-    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : p : []
+    ch <- calcChecksum [1,2]
+    serialWriteList 0 $ (firmwareReplyVal BS_RESP_TYPE) : p : ch : []
 
 processRequestMicros :: [Word8] -> Arduino ()
 processRequestMicros _ = do 
