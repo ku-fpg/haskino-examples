@@ -11,6 +11,7 @@ module SerialCmds where
 
 import System.Hardware.Haskino
 import Data.Word
+import Data.Bits
 
 import Comms
 import FirmwareCmds 
@@ -21,7 +22,7 @@ processSerialCommand m =
         c | c == firmwareCmdVal SER_CMD_BEGIN      -> processBegin     $ tail m
           | c == firmwareCmdVal SER_CMD_END        -> processEnd       $ tail m
           | c == firmwareCmdVal SER_CMD_READ       -> processRead      $ tail m
-          | c == firmwareCmdVal SER_CMD_READ_LIST  -> processReadLlist $ tail m
+          | c == firmwareCmdVal SER_CMD_READ_LIST  -> processReadList  $ tail m
           | c == firmwareCmdVal SER_CMD_WRITE      -> processWrite     $ tail m
           | c == firmwareCmdVal SER_CMD_WRITE_LIST -> processWriteList $ tail m
         _                                          -> return ()
@@ -46,11 +47,11 @@ processRead :: [Word8] -> Arduino ()
 processRead m = do
     if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0)
     then do
-        l <- serialRead (m !! 2) 
-        sendReply (firmwareReplyVal SER_RESP_READ) $ ( fromIntegral $ us `shiftR` 24 ) : 
-                                                     ( fromIntegral $ us `shiftR` 16 ) : 
-                                                     ( fromIntegral $ us `shiftR` 8  ) :  
-                                                     ( fromIntegral $ us .&.      8  ) : []
+        s <- serialRead (m !! 2) 
+        sendReply (firmwareReplyVal SER_RESP_READ) $ ( fromIntegral $ s `shiftR` 24 ) : 
+                                                     ( fromIntegral $ s `shiftR` 16 ) : 
+                                                     ( fromIntegral $ s `shiftR` 8  ) :  
+                                                     ( fromIntegral $ s .&.      8  ) : []
     else return ()
 
 processReadList :: [Word8] -> Arduino ()
@@ -73,5 +74,5 @@ processWriteList m = do
     if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) &&
        (m !! 3 == exprTypeVal EXPR_LIST8) && (m !! 4 == 0) &&
        (length m == (fromIntegral (m !! 5)) + 6)
-    then serialWrite (m !! 2) (drop 6 m)
+    then serialWriteList (m !! 2) (drop 6 m)
     else return ()
