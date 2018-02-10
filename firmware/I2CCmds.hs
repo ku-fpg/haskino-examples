@@ -24,7 +24,7 @@ processI2CCommand m =
         _                                      -> return ()
 
 processRead :: [Word8] -> Arduino ()
-processRead m = do
+processRead m =
     if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0) &&
        (m !! 4 == exprTypeVal EXPR_WORD8) && (m !! 5 == 0)
     then do

@@ -19,7 +19,7 @@ import BoardControlCmds
 import BoardStatusCmds
 import Comms
 import DigitalCmds
--- import I2CCmds
+import I2CCmds
 import SerialCmds
 import StepperCmds
 
@@ -33,7 +33,7 @@ parseMessage m = do
               | c == firmwareTypeVal BS_CMD_TYPE   -> processBoardStatusCommand m
               | c == firmwareTypeVal DIG_CMD_TYPE  -> processDigitalCommand m
               | c == firmwareTypeVal ALG_CMD_TYPE  -> processAnalogCommand m
-              -- | c == firmwareTypeVal I2C_CMD_TYPE  -> processI2CCommand m
+              | c == firmwareTypeVal I2C_CMD_TYPE  -> processI2CCommand m
               | c == firmwareTypeVal SER_CMD_TYPE  -> processSerialCommand m
               | c == firmwareTypeVal STEP_CMD_TYPE -> processStepperCommand m
             {-
