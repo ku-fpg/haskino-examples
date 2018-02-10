@@ -29,8 +29,8 @@ processSystemReset _ = systemReset
 
 processSetPinMode :: [Word8] -> Arduino ()
 processSetPinMode m = 
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8) &&
-       (m !! 3 == 0) && (m !! 4 == exprTypeVal EXPR_WORD8)
+    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) &&
+       (m !! 3 == exprTypeVal EXPR_WORD8) && (m !! 4 == 0)
     then do
         let mode = case m !! 5 of
                       0 -> INPUT
@@ -42,7 +42,7 @@ processSetPinMode m =
 
 processDelayMillis :: [Word8] -> Arduino ()
 processDelayMillis m = do
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD32)
+    if (head m == exprTypeVal EXPR_WORD32) && (m !! 1 == 0)
     then delayMillis $ fromIntegral (m !! 2) `shiftL` 24 .|.
                        fromIntegral (m !! 3) `shiftL` 16 .|.
                        fromIntegral (m !! 4) `shiftL`  8 .|.
@@ -51,7 +51,7 @@ processDelayMillis m = do
 
 processDelayMicros :: [Word8] -> Arduino ()
 processDelayMicros m = 
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD32)
+    if (head m == exprTypeVal EXPR_WORD32) && (m !! 1 == 0)
     then delayMicros $ fromIntegral (m !! 2) `shiftL` 24 .|.
                        fromIntegral (m !! 3) `shiftL` 16 .|.
                        fromIntegral (m !! 4) `shiftL`  8 .|.

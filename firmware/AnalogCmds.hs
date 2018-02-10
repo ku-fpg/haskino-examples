@@ -27,7 +27,7 @@ processAnalogCommand m =
 
 processReadPin :: [Word8] -> Arduino ()
 processReadPin m = do
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8)
+    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0)
     then do
         a <- analogRead $ m !! 2
         sendReply (firmwareReplyVal ALG_RESP_READ_PIN) $ ( fromIntegral $ a `shiftR` 8) :  (fromIntegral $ a .&. 8) : []
@@ -35,17 +35,17 @@ processReadPin m = do
 
 processWritePin :: [Word8] -> Arduino ()
 processWritePin m = do
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8) &&
-       (m !! 3 == 0) && (m !! 4 == exprTypeVal EXPR_WORD16)
+    if (head m == exprTypeVal EXPR_WORD8)  && (m !! 1 == 0) &&
+       (m !! 3 == exprTypeVal EXPR_WORD16) && (m !! 4 == 0)
     then analogWrite (m !! 2) $ fromIntegral (m !! 5) `shiftL` 8 .|.
                                 fromIntegral (m !! 6)
     else return ()
 
 processTonePin :: [Word8] -> Arduino ()
 processTonePin m = do 
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8) &&
-       (m !! 3 == 0) && (m !! 4 == exprTypeVal EXPR_WORD16) &&
-       (m !! 7 == 0) && (m !! 8 == exprTypeVal EXPR_WORD32)
+    if (head m == exprTypeVal EXPR_WORD8)  && (m !! 1 == 0) &&
+       (m !! 3 == exprTypeVal EXPR_WORD16) && (m !! 4 == 0) &&
+       (m !! 7 == exprTypeVal EXPR_WORD32) && (m !! 8 == 0)
     then do
         let duration = fromIntegral (m !! 8 ) `shiftL` 24 .|.
                        fromIntegral (m !! 9 ) `shiftL` 16 .|.
@@ -60,6 +60,6 @@ processTonePin m = do
 
 processNoTonePin :: [Word8] -> Arduino ()
 processNoTonePin m = do 
-    if (head m == 0) && (m !! 1 == exprTypeVal EXPR_WORD8) 
+    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) 
     then noTone (m !! 2) 
     else return ()
