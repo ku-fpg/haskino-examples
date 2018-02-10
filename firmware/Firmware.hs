@@ -19,6 +19,7 @@ import BoardControlCmds
 import BoardStatusCmds
 import Comms
 import DigitalCmds
+import I2CCmds
 
 parseMessage :: [Word8] -> Arduino ()
 parseMessage m = do
@@ -30,9 +31,8 @@ parseMessage m = do
               | c == firmwareTypeVal BS_CMD_TYPE  -> processBoardStatusCommand m
               | c == firmwareTypeVal DIG_CMD_TYPE -> processDigitalCommand m
               | c == firmwareTypeVal ALG_CMD_TYPE -> processAnalogCommand m
+              | c == firmwareTypeVal I2C_CMD_TYPE -> processI2CCommand m
             {-
-            ALG_CMD_TYPE  -> processAnalogCommand m 
-            I2C_CMD_TYPE  -> processI2CCommand m 
             SER_CMD_TYPE  -> processSerialCommand m 
             STEP_CMD_TYPE -> processStepperCommand m 
             SVRO_CMD_TYPE -> processServoCommand m  
