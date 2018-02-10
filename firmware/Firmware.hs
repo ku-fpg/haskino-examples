@@ -20,8 +20,8 @@ import BoardStatusCmds
 import Comms
 import DigitalCmds
 -- import I2CCmds
--- import SerialCmds
---i mport StepperCmds
+import SerialCmds
+import StepperCmds
 
 parseMessage :: [Word8] -> Arduino ()
 parseMessage m = do
@@ -34,8 +34,8 @@ parseMessage m = do
               | c == firmwareTypeVal DIG_CMD_TYPE  -> processDigitalCommand m
               | c == firmwareTypeVal ALG_CMD_TYPE  -> processAnalogCommand m
               -- | c == firmwareTypeVal I2C_CMD_TYPE  -> processI2CCommand m
-              -- | c == firmwareTypeVal SER_CMD_TYPE  -> processSerialCommand m
-              -- | c == firmwareTypeVal STEP_CMD_TYPE -> processStepperCommand m
+              | c == firmwareTypeVal SER_CMD_TYPE  -> processSerialCommand m
+              | c == firmwareTypeVal STEP_CMD_TYPE -> processStepperCommand m
             {-
             SVRO_CMD_TYPE -> processServoCommand m  
             REF_CMD_TYPE  -> processRefernceCommand m
