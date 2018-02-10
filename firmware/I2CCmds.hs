@@ -19,8 +19,8 @@ processI2CCommand :: [Word8] -> Arduino ()
 processI2CCommand m = 
     case head m of
         c | c == firmwareCmdVal I2C_CMD_CONFIG -> processConfig $ tail m
-          | c == firmwareCmdVal I2C_CMD_READ   -> processRead $ tail m
-          | c == firmwareCmdVal I2C_CMD_WRITE  -> processWrite $ tail m
+          | c == firmwareCmdVal I2C_CMD_READ   -> processRead   $ tail m
+          | c == firmwareCmdVal I2C_CMD_WRITE  -> processWrite  $ tail m
         _                                      -> return ()
 
 processRead :: [Word8] -> Arduino ()

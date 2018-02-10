@@ -19,9 +19,9 @@ import FirmwareCmds
 processAnalogCommand :: [Word8] -> Arduino ()
 processAnalogCommand m = 
     case head m of
-        c | c == firmwareCmdVal ALG_CMD_READ_PIN   -> processReadPin $ tail m
-          | c == firmwareCmdVal ALG_CMD_WRITE_PIN  -> processWritePin $ tail m
-          | c == firmwareCmdVal ALG_CMD_TONE_PIN   -> processTonePin $ tail m
+        c | c == firmwareCmdVal ALG_CMD_READ_PIN   -> processReadPin   $ tail m
+          | c == firmwareCmdVal ALG_CMD_WRITE_PIN  -> processWritePin  $ tail m
+          | c == firmwareCmdVal ALG_CMD_TONE_PIN   -> processTonePin   $ tail m
           | c == firmwareCmdVal ALG_CMD_NOTONE_PIN -> processNoTonePin $ tail m
         _                                          -> return ()
 

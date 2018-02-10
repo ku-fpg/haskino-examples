@@ -19,7 +19,7 @@ processBoardControlCommand :: [Word8] -> Arduino ()
 processBoardControlCommand m = 
     case head m of
         c | c == firmwareCmdVal BC_CMD_SYSTEM_RESET -> processSystemReset $ tail m
-          | c == firmwareCmdVal BC_CMD_SET_PIN_MODE -> processSetPinMode $ tail m
+          | c == firmwareCmdVal BC_CMD_SET_PIN_MODE -> processSetPinMode  $ tail m
           | c == firmwareCmdVal BC_CMD_DELAY_MILLIS -> processDelayMillis $ tail m
           | c == firmwareCmdVal BC_CMD_DELAY_MICROS -> processDelayMicros $ tail m
         _                                            -> return ()

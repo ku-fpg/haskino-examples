@@ -18,9 +18,9 @@ import FirmwareCmds
 processDigitalCommand :: [Word8] -> Arduino ()
 processDigitalCommand m = 
     case head m of
-        c | c == firmwareCmdVal DIG_CMD_READ_PIN   -> processReadPin $ tail m
-          | c == firmwareCmdVal DIG_CMD_WRITE_PIN  -> processWritePin $ tail m
-          | c == firmwareCmdVal DIG_CMD_READ_PORT  -> processReadPort $ tail m
+        c | c == firmwareCmdVal DIG_CMD_READ_PIN   -> processReadPin   $ tail m
+          | c == firmwareCmdVal DIG_CMD_WRITE_PIN  -> processWritePin  $ tail m
+          | c == firmwareCmdVal DIG_CMD_READ_PORT  -> processReadPort  $ tail m
           | c == firmwareCmdVal DIG_CMD_WRITE_PORT -> processWritePort $ tail m
         _                                          -> return ()
 
