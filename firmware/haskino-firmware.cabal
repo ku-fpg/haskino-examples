@@ -36,7 +36,8 @@ Executable haskino-firmware
                    Comms, 
                    DigitalCmds, 
                    I2CCmds,
-                   SerialCmds
+                   SerialCmds,
+                   StepperCmds
     Hs-Source-Dirs: .
     default-language:    Haskell2010
     if flag(deep)

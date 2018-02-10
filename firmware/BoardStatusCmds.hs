@@ -40,7 +40,9 @@ processRequestType _ = do
 processRequestMicros :: [Word8] -> Arduino ()
 processRequestMicros _ = do 
     us <- micros
-    sendReply (firmwareReplyVal BS_RESP_MICROS) $ ( fromIntegral $ us `shiftR` 24 ) : 
+    sendReply (firmwareReplyVal BS_RESP_MICROS) $ ( exprTypeVal EXPR_WORD32       ) :
+                                                  ( exprOpVal EXPR_LIT            ) :
+                                                  ( fromIntegral $ us `shiftR` 24 ) : 
                                                   ( fromIntegral $ us `shiftR` 16 ) : 
                                                   ( fromIntegral $ us `shiftR` 8  ) :  
                                                   ( fromIntegral $ us .&.      8  ) : []
@@ -48,7 +50,9 @@ processRequestMicros _ = do
 processRequestMillis :: [Word8] -> Arduino ()
 processRequestMillis _ = do 
     ms <- millis
-    sendReply (firmwareReplyVal BS_RESP_MICROS) $ ( fromIntegral $ ms `shiftR` 24 ) :
+    sendReply (firmwareReplyVal BS_RESP_MICROS) $ ( exprTypeVal EXPR_WORD32       ) :
+                                                  ( exprOpVal EXPR_LIT            ) :
+                                                  ( fromIntegral $ ms `shiftR` 24 ) :
                                                   ( fromIntegral $ ms `shiftR` 16 ) : 
                                                   ( fromIntegral $ ms `shiftR` 8  ) :
                                                   ( fromIntegral $ ms .&.      8  ) : []

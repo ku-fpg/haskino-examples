@@ -45,10 +45,12 @@ processEnd m = do
 
 processRead :: [Word8] -> Arduino ()
 processRead m = do
-    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0)
+    if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
-        s <- serialRead (m !! 2) 
-        sendReply (firmwareReplyVal SER_RESP_READ) $ ( fromIntegral $ s `shiftR` 24 ) : 
+        s <- serialRead (m !! 3) 
+        sendReply (firmwareReplyVal SER_RESP_READ) $ ( exprTypeVal EXPR_WORD32      ) :
+                                                     ( exprOpVal EXPR_LIT           ) :
+                                                     ( fromIntegral $ s `shiftR` 24 ) : 
                                                      ( fromIntegral $ s `shiftR` 16 ) : 
                                                      ( fromIntegral $ s `shiftR` 8  ) :  
                                                      ( fromIntegral $ s .&.      8  ) : []
@@ -56,10 +58,12 @@ processRead m = do
 
 processReadList :: [Word8] -> Arduino ()
 processReadList m = do
-    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) 
+    if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0) 
     then do
-        l <- serialReadList (m !! 2)
-        sendReply (firmwareReplyVal SER_RESP_READ_LIST) $ ( fromIntegral $ length l) : l
+        l <- serialReadList (m !! 3)
+        sendReply (firmwareReplyVal SER_RESP_READ_LIST) $ ( exprTypeVal EXPR_LIST8  ) :
+                                                          ( exprOpVal EXPR_LIT      ) :
+                                                          ( fromIntegral $ length l ) : l
     else return ()
 
 processWrite :: [Word8] -> Arduino ()

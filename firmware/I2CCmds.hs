@@ -25,11 +25,13 @@ processI2CCommand m =
 
 processRead :: [Word8] -> Arduino ()
 processRead m = do
-    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) &&
-       (m !! 3 == exprTypeVal EXPR_WORD8) && (m !! 4 == 0)
+    if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0) &&
+       (m !! 4 == exprTypeVal EXPR_WORD8) && (m !! 5 == 0)
     then do
-        l <- i2cRead (m !! 2)  (m !! 5)
-        sendReply (firmwareReplyVal I2C_RESP_READ) $ ( fromIntegral $ length l) : l
+        l <- i2cRead (m !! 3)  (m !! 6)
+        sendReply (firmwareReplyVal I2C_RESP_READ) $ ( exprTypeVal EXPR_LIST8  ) :
+                                                     ( exprOpVal EXPR_LIT      ) :
+                                                     ( fromIntegral $ length l ) : l
     else return ()
 
 processWrite :: [Word8] -> Arduino ()

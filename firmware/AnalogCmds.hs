@@ -27,10 +27,12 @@ processAnalogCommand m =
 
 processReadPin :: [Word8] -> Arduino ()
 processReadPin m = do
-    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0)
+    if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
-        a <- analogRead $ m !! 2
-        sendReply (firmwareReplyVal ALG_RESP_READ_PIN) $ ( fromIntegral $ a `shiftR` 8) :  (fromIntegral $ a .&. 8) : []
+        a <- analogRead $ m !! 3
+        sendReply (firmwareReplyVal ALG_RESP_READ_PIN) $ ( exprTypeVal EXPR_WORD16     ) :
+                                                         ( exprOpVal EXPR_LIT          ) :
+                                                         ( fromIntegral $ a `shiftR` 8 ) :  (fromIntegral $ a .&. 8) : []
     else return ()
 
 processWritePin :: [Word8] -> Arduino ()

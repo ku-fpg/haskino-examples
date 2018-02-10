@@ -138,6 +138,11 @@ exprTypeVal EXPR_INT32 = 0x07
 exprTypeVal EXPR_LIST8 = 0x08
 exprTypeVal EXPR_FLOAT = 0x09
 
+data ExprOp = EXPR_LIT
+
+exprOpVal :: ExprOp -> Word8
+exprOpVal EXPR_LIT = 0x00
+
 data FirmwareReply =  BC_RESP_DELAY
                    |  BC_RESP_IF_THEN_ELSE
                    |  BC_RESP_ITERATE

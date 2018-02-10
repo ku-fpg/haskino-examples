@@ -26,10 +26,12 @@ processDigitalCommand m =
 
 processReadPin :: [Word8] -> Arduino ()
 processReadPin m = do
-    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0)
+    if (m !! 1== exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
-        b <- digitalRead $ m !! 2
-        sendReply (firmwareReplyVal DIG_RESP_READ_PIN) $ (if b then 1 else 0) : []
+        b <- digitalRead $ m !! 3
+        sendReply (firmwareReplyVal DIG_RESP_READ_PIN) $ ( exprTypeVal EXPR_BOOL  ) :
+                                                         ( exprOpVal EXPR_LIT     ) :
+                                                         ( if b then 1 else 0     ) : []
     else return ()
 
 processWritePin :: [Word8] -> Arduino ()
@@ -41,11 +43,13 @@ processWritePin m = do
 
 processReadPort :: [Word8] -> Arduino ()
 processReadPort m = do 
-    if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) &&
-       (m !! 3 == exprTypeVal EXPR_WORD8) && (m !! 4 == 0)
+    if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0) &&
+       (m !! 4 == exprTypeVal EXPR_WORD8) && (m !! 5 == 0)
     then do
-        p <- digitalPortRead (m !! 2) (m !! 5)
-        sendReply (firmwareReplyVal DIG_RESP_READ_PORT) $ p : []
+        p <- digitalPortRead (m !! 3) (m !! 6)
+        sendReply (firmwareReplyVal DIG_RESP_READ_PORT) $ ( exprTypeVal EXPR_WORD8  ) :
+                                                          ( exprOpVal EXPR_LIT     ) :
+                                                          p : []
     else return ()
 
 processWritePort :: [Word8] -> Arduino ()
