@@ -81,12 +81,12 @@ sendReplyBytes l = sendReplyBytes' $ 0 : l
     sendReplyBytes' :: [Word8] -> Arduino ()
     sendReplyBytes' l' = 
         if length l' == 2
-        then sendEncodedByte $ check l'
+        then sendEncodedByte $ head l'
         else do
-            sendEncodedByte $ head l'
+            sendEncodedByte $ l' !! 1
             sendReplyBytes' $ check l' : drop 2 l'
 
 sendReply :: Word8 -> [Word8] -> Arduino ()
 sendReply ty rep = do 
-    sendReplyBytes $ 0 : ty : rep
+    sendReplyBytes $ ty : rep
     serialWrite portNum hdlcFrameFlag
