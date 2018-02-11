@@ -79,12 +79,11 @@ sendReplyBytes l = sendReplyBytes' $ 0 : l
     check l' = head l' + l' !! 1
 
     sendReplyBytes' :: [Word8] -> Arduino ()
-    sendReplyBytes' l' = 
+    sendReplyBytes' l' = do
+        sendEncodedByte $ l' !! 1
         if length l' == 2
-        then sendEncodedByte $ head l'
-        else do
-            sendEncodedByte $ l' !! 1
-            sendReplyBytes' $ check l' : drop 2 l'
+        then sendEncodedByte $ check l'
+        else sendReplyBytes' $ check l' : drop 2 l'
 
 sendReply :: Word8 -> [Word8] -> Arduino ()
 sendReply ty rep = do 
