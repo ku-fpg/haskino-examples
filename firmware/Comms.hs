@@ -37,7 +37,8 @@ readChar = do
 checkFrame :: [Word8] -> Word8 -> Arduino [Word8]
 checkFrame f ch = do
     let l = ((length f) - 1)
-    if ch == f !! l
+    let ch' = ch - (f !! l)
+    if ch'  == f !! l
     then return $ take l f
     else return []
 
@@ -53,11 +54,15 @@ readFrame ref = readFrame' []
             ch <- readRemoteRef ref
             writeRemoteRef ref (ch + c' `xor` hdlcMask)
             readFrame' $ c' `xor` hdlcMask : l
-        else if c == hdlcFrameFlag 
+        else do
+            if c == hdlcFrameFlag 
             then do
                 ch' <- readRemoteRef ref
                 checkFrame (reverse l) ch'
-            else readFrame' $ c : l
+            else do
+                ch'' <- readRemoteRef ref
+                writeRemoteRef ref (ch'' + c)
+                readFrame' $ c : l
 
 sendEncodedByte :: Word8 -> Arduino ()
 sendEncodedByte b = 
@@ -83,5 +88,5 @@ sendReplyBytes l = sendReplyBytes' $ 0 : l
 
 sendReply :: Word8 -> [Word8] -> Arduino ()
 sendReply ty rep = do 
-    sendReplyBytes $ ty : rep
+    sendReplyBytes $ 0 : ty : rep
     serialWrite portNum hdlcFrameFlag
