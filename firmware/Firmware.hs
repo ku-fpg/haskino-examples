@@ -38,9 +38,6 @@ parseMessage m = do
               | c == firmwareTypeVal SER_CMD_TYPE  -> processSerialCommand m
               | c == firmwareTypeVal STEP_CMD_TYPE -> processStepperCommand m
               | c == firmwareTypeVal SVRO_CMD_TYPE -> processServoCommand m
-            {-
-            REF_CMD_TYPE  -> processRefernceCommand m
-            -}
             _             -> return ()
 
 firmware :: Arduino ()
