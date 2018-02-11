@@ -42,12 +42,15 @@ parseMessage m = do
 
 firmware :: Arduino ()
 firmware = do
-    cr <- newRemoteRef (0::Word8)
+    cr <- newRemoteRef 0
     serialBegin portNum 115200
-    loop $ do
-        f <- readFrame cr
+    firmware' cr
+  where
+    firmware' :: RemoteRef Word8 -> Arduino ()
+    firmware' cr' = do
+        f <- readFrame cr'
         parseMessage f
-        return ()
+        firmware' cr'
 
 main :: IO ()
 main = compileProgram firmware "firmware.ino"
