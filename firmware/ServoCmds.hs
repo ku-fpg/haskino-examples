@@ -33,10 +33,10 @@ processAttach m = do
        (m !! 4 == exprTypeVal EXPR_WORD16 ) && (m !! 5 == 0) &&
        (m !! 8 == exprTypeVal EXPR_WORD16 ) && (m !! 9 == 0)
     then do
-        s <- servoAttachMinMax (m !! 3) (fromIntegral (m !! 6)  `shiftL` 8 .|.
-                                         fromIntegral (m !! 7 ) ) (
-                                         fromIntegral (m !! 10) `shiftL` 8 .|.
-                                         fromIntegral (m !! 11) )
+        s <- servoAttachMinMax (m !! 3) (fromIntegral (m !! 7 )  `shiftL` 8 .|.
+                                         fromIntegral (m !! 6 ) ) (
+                                         fromIntegral (m !! 11) `shiftL` 8 .|.
+                                         fromIntegral (m !! 10) )
         sendReply (firmwareReplyVal SRVO_RESP_ATTACH) $ ( exprTypeVal EXPR_WORD8     ) :
                                                         ( exprOpVal EXPR_LIT         ) :
                                                         s : []
@@ -63,8 +63,8 @@ processWriteMicros m = do
     if (head m == exprTypeVal EXPR_WORD8 )  && (m !! 1 == 0) &&
        (m !! 3 == exprTypeVal EXPR_WORD16) && (m !! 4 == 0) 
     then do
-        let us = fromIntegral (m !! 5) `shiftL` 8 .|.
-                 fromIntegral (m !! 6) 
+        let us = fromIntegral (m !! 6) `shiftL` 8 .|.
+                 fromIntegral (m !! 5) 
         servoWrite (m !! 2) us
     else return ()
 
@@ -73,9 +73,10 @@ processRead m = do
     if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
         d <- servoRead (m !! 3)
-        sendReply (firmwareReplyVal SRVO_RESP_READ) $ ( exprTypeVal EXPR_WORD16     ) :
-                                                      ( exprOpVal EXPR_LIT          ) :
-                                                      ( fromIntegral $ d `shiftR` 8 ) :  (fromIntegral $ d .&. 8) : []
+        sendReply (firmwareReplyVal SRVO_RESP_READ) $ ( exprTypeVal EXPR_WORD16        ) :
+                                                      ( exprOpVal EXPR_LIT             ) :
+                                                      ( fromIntegral $ d .&.      0xFF ) :
+                                                      ( fromIntegral $ d `shiftR` 8    ) : [] 
     else return ()
 
 processReadMicros :: [Word8] -> Arduino ()
@@ -83,9 +84,8 @@ processReadMicros m = do
     if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
         u <- servoReadMicros (m !! 3)
-        sendReply (firmwareReplyVal SRVO_RESP_READ) $ ( exprTypeVal EXPR_WORD16     ) :
-                                                      ( exprOpVal EXPR_LIT          ) :
-                                                      ( fromIntegral $ u `shiftR` 8 ) :  (fromIntegral $ u .&. 8) : []
+        sendReply (firmwareReplyVal SRVO_RESP_READ) $ ( exprTypeVal EXPR_WORD16        ) :
+                                                      ( exprOpVal EXPR_LIT             ) :
+                                                      ( fromIntegral $ u .&.      0xFF ) :
+                                                      ( fromIntegral $ u `shiftR` 8    ) : [] 
     else return ()
-
-

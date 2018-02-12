@@ -43,7 +43,9 @@ checkFrame f ch = do
     else return []
 
 readFrame :: RemoteRef Word8 -> Arduino [Word8]
-readFrame ref = readFrame' []
+readFrame ref = do
+    writeRemoteRef ref 0
+    readFrame' []
   where
     readFrame' :: [Word8] -> Arduino [Word8]
     readFrame' l = do

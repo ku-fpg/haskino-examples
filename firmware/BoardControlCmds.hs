@@ -42,18 +42,18 @@ processSetPinMode m =
 
 processDelayMillis :: [Word8] -> Arduino ()
 processDelayMillis m = do
-    if (head m == exprTypeVal EXPR_WORD32) && (m !! 1 == 0)
-    then delayMillis $ fromIntegral (m !! 2) `shiftL` 24 .|.
-                       fromIntegral (m !! 3) `shiftL` 16 .|.
-                       fromIntegral (m !! 4) `shiftL`  8 .|.
-                       fromIntegral (m !! 5)
+    if (m !! 1 == exprTypeVal EXPR_WORD32) && (m !! 2 == 0)
+    then delayMillis $ fromIntegral (m !! 5) `shiftL` 24 .|.
+                       fromIntegral (m !! 4) `shiftL` 16 .|.
+                       fromIntegral (m !! 3) `shiftL`  8 .|.
+                       fromIntegral (m !! 2)
     else return ()
 
 processDelayMicros :: [Word8] -> Arduino ()
 processDelayMicros m = 
-    if (head m == exprTypeVal EXPR_WORD32) && (m !! 1 == 0)
-    then delayMicros $ fromIntegral (m !! 2) `shiftL` 24 .|.
-                       fromIntegral (m !! 3) `shiftL` 16 .|.
-                       fromIntegral (m !! 4) `shiftL`  8 .|.
-                       fromIntegral (m !! 5)
+    if (m !! 1 == exprTypeVal EXPR_WORD32) && (m !! 2 == 0)
+    then delayMicros $ fromIntegral (m !! 5) `shiftL` 24 .|.
+                       fromIntegral (m !! 4) `shiftL` 16 .|.
+                       fromIntegral (m !! 3) `shiftL`  8 .|.
+                       fromIntegral (m !! 2)
     else return ()

@@ -30,17 +30,18 @@ processReadPin m = do
     if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
         a <- analogRead $ m !! 3
-        sendReply (firmwareReplyVal ALG_RESP_READ_PIN) $ ( exprTypeVal EXPR_WORD16     ) :
-                                                         ( exprOpVal EXPR_LIT          ) :
-                                                         ( fromIntegral $ a `shiftR` 8 ) :  (fromIntegral $ a .&. 8) : []
+        sendReply (firmwareReplyVal ALG_RESP_READ_PIN) $ ( exprTypeVal EXPR_WORD16        ) :
+                                                         ( exprOpVal EXPR_LIT             ) :
+                                                         ( fromIntegral $ a .&.      0xFF ) :
+                                                         ( fromIntegral $ a `shiftR` 8    ) : []  
     else return ()
 
 processWritePin :: [Word8] -> Arduino ()
 processWritePin m = do
     if (head m == exprTypeVal EXPR_WORD8)  && (m !! 1 == 0) &&
        (m !! 3 == exprTypeVal EXPR_WORD16) && (m !! 4 == 0)
-    then analogWrite (m !! 2) $ fromIntegral (m !! 5) `shiftL` 8 .|.
-                                fromIntegral (m !! 6)
+    then analogWrite (m !! 2) $ fromIntegral (m !! 6) `shiftL` 8 .|.
+                                fromIntegral (m !! 5)
     else return ()
 
 processTonePin :: [Word8] -> Arduino ()
@@ -49,12 +50,12 @@ processTonePin m = do
        (m !! 3 == exprTypeVal EXPR_WORD16) && (m !! 4 == 0) &&
        (m !! 7 == exprTypeVal EXPR_WORD32) && (m !! 8 == 0)
     then do
-        let duration = fromIntegral (m !! 8 ) `shiftL` 24 .|.
-                       fromIntegral (m !! 9 ) `shiftL` 16 .|.
-                       fromIntegral (m !! 10) `shiftL`  8 .|.
-                       fromIntegral (m !! 11)
-            freq =     fromIntegral (m !! 5 ) `shiftL`  8 .|.
-                       fromIntegral (m !! 6)
+        let duration = fromIntegral (m !! 11) `shiftL` 24 .|.
+                       fromIntegral (m !! 10) `shiftL` 16 .|.
+                       fromIntegral (m !! 9 ) `shiftL`  8 .|.
+                       fromIntegral (m !! 8 )
+            freq =     fromIntegral (m !! 6 ) `shiftL`  8 .|.
+                       fromIntegral (m !! 5 )
         if duration == 0
         then tone (m !! 2) freq Nothing
         else tone (m !! 2) freq (Just duration)

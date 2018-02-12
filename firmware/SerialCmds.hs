@@ -31,10 +31,10 @@ processBegin :: [Word8] -> Arduino ()
 processBegin m = do
     if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) &&
        (m !! 3 == exprTypeVal EXPR_WORD32) && (m !! 4 == 0)
-    then serialBegin (m !! 2) $ fromIntegral (m !! 5) `shiftL` 24 .|.
-                                fromIntegral (m !! 6) `shiftL` 16 .|.
-                                fromIntegral (m !! 7) `shiftL`  8 .|.
-                                fromIntegral (m !! 8)
+    then serialBegin (m !! 2) $ fromIntegral (m !! 8) `shiftL` 24 .|.
+                                fromIntegral (m !! 7) `shiftL` 16 .|.
+                                fromIntegral (m !! 6) `shiftL`  8 .|.
+                                fromIntegral (m !! 5)
     else return ()
 
 processEnd :: [Word8] -> Arduino ()
@@ -48,12 +48,12 @@ processRead m = do
     if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
         s <- serialRead (m !! 3) 
-        sendReply (firmwareReplyVal SER_RESP_READ) $ ( exprTypeVal EXPR_WORD32      ) :
-                                                     ( exprOpVal EXPR_LIT           ) :
-                                                     ( fromIntegral $ s `shiftR` 24 ) : 
-                                                     ( fromIntegral $ s `shiftR` 16 ) : 
-                                                     ( fromIntegral $ s `shiftR` 8  ) :  
-                                                     ( fromIntegral $ s .&.      8  ) : []
+        sendReply (firmwareReplyVal SER_RESP_READ) $ ( exprTypeVal EXPR_WORD32        ) :
+                                                     ( exprOpVal EXPR_LIT             ) :
+                                                     ( fromIntegral $ s .&.      0xFF ) :
+                                                     ( fromIntegral $ s `shiftR`  8   ) : 
+                                                     ( fromIntegral $ s `shiftR` 16   ) : 
+                                                     ( fromIntegral $ s `shiftR` 24   ) : [] 
     else return ()
 
 processReadList :: [Word8] -> Arduino ()
