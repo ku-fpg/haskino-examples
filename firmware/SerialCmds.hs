@@ -48,7 +48,9 @@ processRead m = do
     if (m !! 1 == exprTypeVal EXPR_WORD8) && (m !! 2 == 0)
     then do
         s <- serialRead (m !! 3) 
-        sendReply (firmwareReplyVal SER_RESP_READ) $ ( fromIntegral $ s .&.      0xFF ) :
+        sendReply (firmwareReplyVal SER_RESP_READ) $ ( exprTypeVal EXPR_WORD32        ) :
+                                                     ( exprOpVal EXPR_LIT             ) :
+                                                     ( fromIntegral $ s .&.      0xFF ) :
                                                      ( fromIntegral $ s `shiftR`  8   ) : 
                                                      ( fromIntegral $ s `shiftR` 16   ) : 
                                                      ( fromIntegral $ s `shiftR` 24   ) : [] 
