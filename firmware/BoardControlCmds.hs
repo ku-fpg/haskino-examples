@@ -13,6 +13,7 @@ import System.Hardware.Haskino
 import Data.Word
 import Data.Bits
 
+import Comms
 import FirmwareCmds 
 
 processBoardControlCommand :: [Word8] -> Arduino ()
@@ -43,17 +44,21 @@ processSetPinMode m =
 processDelayMillis :: [Word8] -> Arduino ()
 processDelayMillis m = do
     if (m !! 1 == exprTypeVal EXPR_WORD32) && (m !! 2 == 0)
-    then delayMillis $ fromIntegral (m !! 5) `shiftL` 24 .|.
-                       fromIntegral (m !! 4) `shiftL` 16 .|.
-                       fromIntegral (m !! 3) `shiftL`  8 .|.
-                       fromIntegral (m !! 2)
+    then do
+      delayMillis $ fromIntegral (m !! 6) `shiftL` 24 .|.
+                    fromIntegral (m !! 5) `shiftL` 16 .|.
+                    fromIntegral (m !! 4) `shiftL`  8 .|.
+                    fromIntegral (m !! 3)
+      sendReply (firmwareReplyVal BC_RESP_DELAY) []
     else return ()
 
 processDelayMicros :: [Word8] -> Arduino ()
 processDelayMicros m = 
     if (m !! 1 == exprTypeVal EXPR_WORD32) && (m !! 2 == 0)
-    then delayMicros $ fromIntegral (m !! 5) `shiftL` 24 .|.
-                       fromIntegral (m !! 4) `shiftL` 16 .|.
-                       fromIntegral (m !! 3) `shiftL`  8 .|.
-                       fromIntegral (m !! 2)
+    then do
+      delayMicros $ fromIntegral (m !! 6) `shiftL` 24 .|.
+                    fromIntegral (m !! 5) `shiftL` 16 .|.
+                    fromIntegral (m !! 4) `shiftL`  8 .|.
+                    fromIntegral (m !! 3)
+      sendReply (firmwareReplyVal BC_RESP_DELAY) []
     else return ()
