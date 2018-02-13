@@ -50,10 +50,17 @@ data Key = KeyNone
          | KeyUp
          | KeyDown
          | KeySelect
-  deriving (Enum)
+
+-- fromEnum is currently not working with translation,
+-- so we do not use derviving Enum here.
 
 keyValue :: Key -> Word8
-keyValue k = fromIntegral $ fromEnum k
+keyValue KeyNone   = 0
+keyValue KeyRight  = 1
+keyValue KeyLeft   = 2
+keyValue KeyUp     = 3
+keyValue KeyDown   = 4
+keyValue KeySelect = 5
 
 getKey :: Word8 -> Arduino Word8
 getKey b = do
