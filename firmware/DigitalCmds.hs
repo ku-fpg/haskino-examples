@@ -37,7 +37,7 @@ processReadPin m = do
 processWritePin :: [Word8] -> Arduino ()
 processWritePin m = do
     if (head m == exprTypeVal EXPR_WORD8) && (m !! 1 == 0) &&
-       (m !! 3 == exprTypeVal EXPR_WORD8) && (m !! 4 == 0)
+       (m !! 3 == exprTypeVal EXPR_BOOL ) && (m !! 4 == 0)
     then digitalWrite (m !! 2) $ if m !! 5 == 0 then False else True
     else return ()
 
