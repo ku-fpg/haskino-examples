@@ -40,18 +40,20 @@ parseMessage m = do
               | c == firmwareTypeVal SVRO_CMD_TYPE -> processServoCommand m
             _             -> return ()
 
-firmware :: Arduino ()
-firmware = do
-    cr <- newRemoteRef 0
-    serialBegin portNum 115200
-    firmware' cr
+firmware :: RemoteRef Word8 -> Arduino ()
+firmware cr = firmware'
   where
-    firmware' :: RemoteRef Word8 -> Arduino ()
-    firmware' cr' = do
-        f <- readFrame cr'
+    firmware' :: Arduino ()
+    firmware'  = do
+        f <- readFrame cr
         parseMessage f
-        firmware' cr'
+        firmware'
+
+allocRef :: Arduino ()
+allocRef = do
+    cr <- newRemoteRef 0
+    firmware cr
 
 main :: IO ()
-main = compileProgram firmware "firmware.ino"
+main = compileProgram allocRef "firmware.ino"
 
