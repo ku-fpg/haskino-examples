@@ -46,6 +46,14 @@ keyValue KeyUp     = 3
 keyValue KeyDown   = 4
 keyValue KeySelect = 5
 
+keyName :: Word8 -> [Word8]
+keyName 1 = litString " Right "
+keyName 2 = litString " Left  "
+keyName 3 = litString " Up    "
+keyName 4 = litString " Down  "
+keyName 5 = litString " Select"
+keyName _ = litString " ?     "
+
 getKey :: Arduino Word8
 getKey = do
     key <- analogKey
@@ -72,7 +80,7 @@ getKey = do
 displayState :: LCD -> Word8 -> Word8 -> Arduino ()
 displayState lcd s k = do
     lcdHome lcd
-    lcdWrite lcd $ (litString "State ") ++ showB s ++ (litString " Key ") ++ showB k
+    lcdWrite lcd $ (litString "State ") ++ showB s ++ (keyName k)
 
 theProgram :: Arduino ()
 theProgram = do
