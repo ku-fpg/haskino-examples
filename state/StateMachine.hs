@@ -72,7 +72,7 @@ getKey = do
 displayState :: LCD -> Word8 -> Word8 -> Arduino ()
 displayState lcd s k = do
     lcdHome lcd
-    lcdWrite lcd $ (litString "State ") ++ showB s 
+    lcdWrite lcd $ (litString "State ") ++ showB s ++ (litString " Key ") ++ showB k
 
 theProgram :: Arduino ()
 theProgram = do
@@ -81,15 +81,11 @@ theProgram = do
     stateMachine lcd
 
 stateMachine :: LCD -> Arduino ()
-stateMachine lcd =
-    state1 $ keyValue KeyNone
+stateMachine lcd = do
+    displayState lcd 1 0
+    key <- getKey
+    state2 key
   where
-    state1 :: Word8 -> Arduino ()
-    state1 k = do
-       displayState lcd 1 k
-       key <- getKey
-       state2 key
-
     state2 :: Word8 -> Arduino ()
     state2 k = do
        displayState lcd 2 k
