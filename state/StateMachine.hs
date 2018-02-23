@@ -47,6 +47,7 @@ keyValue KeyDown   = 4
 keyValue KeySelect = 5
 
 keyName :: Word8 -> [Word8]
+keyName 0 = litString " None  "
 keyName 1 = litString " Right "
 keyName 2 = litString " Left  "
 keyName 3 = litString " Up    "
@@ -89,11 +90,16 @@ theProgram = do
     stateMachine lcd
 
 stateMachine :: LCD -> Arduino ()
-stateMachine lcd = do
-    displayState lcd 1 0
-    key <- getKey
-    state2 key
+stateMachine lcd = state1 $ keyValue KeyNone
   where
+    state1 :: Word8 -> Arduino ()
+    state1 k = do
+       displayState lcd 1 k
+       key <- getKey
+       case key of
+          5 -> state1 key
+          _ -> state2 key
+
     state2 :: Word8 -> Arduino ()
     state2 k = do
        displayState lcd 2 k
@@ -101,6 +107,7 @@ stateMachine lcd = do
        case key of
           1 -> state3 key
           2 -> state4 key
+          5 -> state1 key
           _ -> state2 key
 
     state3 :: Word8 -> Arduino ()
@@ -110,6 +117,7 @@ stateMachine lcd = do
        case key of
           1 -> state4 key
           2 -> state2 key
+          5 -> state1 key
           _ -> state3 key
 
     state4 :: Word8 -> Arduino ()
@@ -118,7 +126,8 @@ stateMachine lcd = do
        key <- getKey
        case key of
           1 -> state2 key
-          2 -> state3 key 
+          2 -> state3 key
+          5 -> state1 key 
           _ -> state4 key
 
 main :: IO ()

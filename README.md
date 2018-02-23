@@ -9,6 +9,7 @@ The examples are as follows, with the name show being the stack build target nam
 * [haskino-lcdcounter](https://github.com/ku-fpg/haskino-examples/tree/master/led-counter) - A Haskino example with a OSEPP LCD shield with uses the LCD display and buttons to implement an up/down counter.
 * [haskino-multiled](https://github.com/ku-fpg/haskino-examples/tree/master/multi-led) - A Haskino example demonstrating the multi-tasking kernel with 3 LEDs.
 * [haskino-semexample](https://github.com/ku-fpg/haskino-examples/tree/master/sem-example) - A Haskino example demonstrating the multi-tasking kernel and semaphore communication with a flashing LED.
+* [haskino-state](https://github.com/ku-fpg/haskino-examples/tree/master/state) - A Haskino example demonstrating mutual recurion transformation implmenting a state machine using the OSEPP LCD shiel..
 
 To build an example with shallow to deep translation (the default) (using haskino-blink as an example):
 
