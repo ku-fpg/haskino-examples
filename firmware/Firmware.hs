@@ -41,7 +41,9 @@ parseMessage m = do
             _             -> return ()
 
 firmware :: RemoteRef Word8 -> Arduino ()
-firmware cr = firmware'
+firmware cr = do
+    serialBegin 0 115200
+    firmware'
   where
     firmware' :: Arduino ()
     firmware'  = do
