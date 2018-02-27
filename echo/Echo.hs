@@ -42,9 +42,8 @@ echo = do
     loop $ do
         waitForInput
         c <- serialRead portNum
-        let ch = fromIntegral c
-        lcdWriteChar lcd ch
-        serialWrite portNum ch
+        lcdWriteChar lcd $ fromIntegral c
+        serialWrite portNum $ fromIntegral c
   where
     waitForInput :: Arduino ()
     waitForInput = do
