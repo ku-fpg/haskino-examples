@@ -55,16 +55,16 @@ readFrame ref = do
             c' <- readChar
             ch <- readRemoteRef ref
             writeRemoteRef ref (ch + c' `xor` hdlcMask)
-            readFrame' $ c' `xor` hdlcMask : l
+            readFrame' $ l ++ (c' `xor` hdlcMask : [])
         else do
             if c == hdlcFrameFlag 
             then do
                 ch' <- readRemoteRef ref
-                checkFrame (reverse l) ch'
+                checkFrame l ch'
             else do
                 ch'' <- readRemoteRef ref
                 writeRemoteRef ref (ch'' + c)
-                readFrame' $ c : l
+                readFrame' $ l ++ (c : [])
 
 sendEncodedByte :: Word8 -> Arduino ()
 sendEncodedByte b = 
