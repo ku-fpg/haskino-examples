@@ -44,6 +44,16 @@ packages:
 - 'firmware'
 - 'test'
 - 'state'
+- 'night-light'
+- location:
+    git: 'git@github.com:ku-fpg/haskino'
+    commit: '99bf3ba'
+  extra-dep: true
+- location:
+    git: 'git@github.com:ku-fpg/remote-monad'
+    commit: 'f2fa0c0'
+  extra-dep: true
+
 #- location: https://github.com/ku-fpg/haskino/archive/master.zip
 #  extra-dep: true
 #- location: https://github.com/ku-fpg/remote-monad/archive/d39fa9d179d6d294d85de81720041fedd44183e1.zip

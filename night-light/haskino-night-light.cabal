@@ -1,0 +1,37 @@
+Name:                haskino-night-light
+Version:             0.1
+Category:            Hardware
+Synopsis:            Examples for Haskino
+Homepage:            https://github.com/markgrebe/haskino-examples
+Bug-reports:         https://github.com/markgrebe/haskino-examples
+License:             BSD3
+Author:              Justin Dawson <jdawson@ku.edu>
+Maintainer:          Justin Dawson <jdawson@ku.edu>
+Copyright:           (c) 2017 The University of Kansas
+Category:            Language, Embedded, Compiler
+Build-type:          Simple
+Cabal-Version:       >= 1.14
+Description:
+  Example applications of the haskino package.
+
+source-repository head
+  type:     git
+  location: git://github.com/markgrebe/haskino-examples.git
+
+Flag deep
+  Description:   Turn on shallow to deep translation
+  Default:       False
+
+Executable haskino-night-light
+    Build-Depends:
+         base                   >= 4 && < 5,
+         haskino                >= 0.6,
+         ghc                    >= 8.0.2
+
+    Main-is: NightLight.hs
+    Hs-Source-Dirs: .
+    default-language:    Haskell2010
+    if flag(deep)
+      Ghc-Options: -Wall -threaded -fplugin=System.Hardware.Haskino.ShallowDeepPlugin
+    else
+      Ghc-Options: -Wall -threaded
