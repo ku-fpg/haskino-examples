@@ -1,13 +1,16 @@
 # haskino-examples
 
-This repository contains 5 example programs for use with the [Haskino](https://github.com/ku-fpg/haskino-examples) library.
+This repository contains 9 example programs for use with the [Haskino](https://github.com/ku-fpg/haskino-examples) library.
 
 The examples are as follows, with the name show being the stack build target name:
 
 * [haskino-blink](https://github.com/ku-fpg/haskino-examples/tree/master/blink) - Standard Arduino "Hello World", blinks the onboard LED.
 * [haskino-hello](https://github.com/ku-fpg/haskino-examples/tree/master/hello-lawrence) - A Haskino "Hello World" for KU alumni everywhere for use with an LCD display.
+* [haskino-echo](https://github.com/ku-fpg/haskino-examples/tree/master/echo) - A Haskino Serial port echo program.
+* [haskino-firmware](https://github.com/ku-fpg/haskino-examples/tree/master/firmware) - The shallow Haskino firmware interpreter, written in Haskino.
 * [haskino-lcdcounter](https://github.com/ku-fpg/haskino-examples/tree/master/led-counter) - A Haskino example with a OSEPP LCD shield with uses the LCD display and buttons to implement an up/down counter.
 * [haskino-multiled](https://github.com/ku-fpg/haskino-examples/tree/master/multi-led) - A Haskino example demonstrating the multi-tasking kernel with 3 LEDs.
+* [haskino-night-light](https://github.com/ku-fpg/haskino-examples/tree/master/night-light) - A Haskino example that controls a night light and plays a song.
 * [haskino-semexample](https://github.com/ku-fpg/haskino-examples/tree/master/sem-example) - A Haskino example demonstrating the multi-tasking kernel and semaphore communication with a flashing LED.
 * [haskino-state](https://github.com/ku-fpg/haskino-examples/tree/master/state) - A Haskino example demonstrating mutual recurion transformation implmenting a state machine using the OSEPP LCD shiel..
 
@@ -49,4 +52,6 @@ When building with the compiler, the result .ino C language file should be copie
 
 **Note**:
 The haskino-multiled and haskino-semexample programs use the multi-tasking portions of the Haskino runtime, and in running Haskino tasks on the Arduino, require the deep DSL, and will not work with the compiler or interpreter in the shallow version.
+
+Also, the haskino-night-light deep flag default is reverse of the other examples, it defaults to building the shallow version.
 
