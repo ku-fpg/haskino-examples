@@ -1,6 +1,6 @@
 # haskino-examples
 
-This repository contains 9 example programs for use with the [Haskino](https://github.com/ku-fpg/haskino-examples) library.
+This repository contains 9 example programs for use with the [Haskino](https://github.com/ku-fpg/haskino) library.
 
 The examples are as follows, with the name show being the stack build target name:
 
